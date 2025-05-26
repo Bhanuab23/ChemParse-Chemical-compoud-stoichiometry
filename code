@@ -1,0 +1,199 @@
+print('Please enter the Chemical formula of the Compound and Element symbol correctly as per the IUPAC rules')
+print('for example:H2SO4,NaCl,HCl,K4(NO(SO3)2)2,etc')
+s=input("please enter the chemical formula(as mentioned in example):")
+e=s
+z=s
+
+for c in s:
+    if (c>='1' and c<='9') or c=='(' or c==')':
+         s=s.replace(c,'',1)
+#print(s)    
+p=list(s)
+#print(p)
+c=0
+x=''
+i=0
+for i in range(len(p)):
+    c=0
+    #print(i,p[i])
+    if p[i]>='a' and p[i]<='z':
+        #print(p[i])
+        p[i-1]+=p[i]
+        c=1
+        p[i]=0
+while 0 in p:
+    p.remove(0)
+w=p.copy()   
+#print('w=',w)
+p.sort()    
+#print('w=',w)
+B={i:0 for i in p}
+#print(B)
+#print("p=",p)
+def atoms(z,q):
+    if '(' not in z:
+        h=list(z)
+        for i in range(len(h)):
+            v=0
+            #print(i,h[i])
+            if h[i]>='a' and h[i]<='z':
+                #print(h[i])
+                h[i-1]+=h[i]
+                v=1
+                h[i]=0
+        while 0 in h:
+            h.remove(0)
+        for i in range(len(h)):
+            v=0
+            #print(i,h[i])    
+            if i<len(h)-1 and h[i]>='1' and h[i]<='9' and h[i+1]>='1' and h[i+1]<='9':
+                h[i]+=h[i+1]
+                v+=1
+                h[i+1]='+'
+        #print(h)        
+        while '+' in h:
+            h.remove('+')
+        #print(h)    
+        p=h
+        #print("p=",p)
+        
+        for i in range(len(p)):
+            if p[i] in B.keys():
+                index = i
+                #print(p[i])
+                if index != -1 and index < len(p)-1:
+                     nxt = p[index + 1]
+                     #print(nxt)
+                     if nxt>='A' and nxt<='Z':
+                         B[p[i]]+=q*1
+                     else:
+                         B[p[i]]+=q*int(nxt)    
+                else:
+                     B[p[i]]+=q*1
+        return             
+    
+    l={i:z[i] for i in range(len(z))}
+    
+    for key,val in enumerate(z):
+        if val=='(':
+            n=key+1
+            break   
+    for key,val in reversed(l.items()):
+        if val==')':
+            m=key
+            break         
+    j=z[n-1:m+2]
+    x=z.replace(j,"")
+    h=list(x)
+    for i in range(len(h)):
+        v=0
+        #print(i,h[i])
+        if h[i]>='a' and h[i]<='z':
+            #print(h[i])
+            h[i-1]+=h[i]
+            v=1
+            h[i]=0
+    while 0 in h:
+            h.remove(0)
+    for i in range(len(h)):
+        v=0
+        #print(i,h[i])    
+        if i<len(h)-1 and h[i]>='1' and h[i]<='9' and h[i+1]>='1' and h[i+1]<='9':
+             h[i]+=h[i+1]
+             v+=1
+             h[i+1]='+'
+    #print(h)        
+    while '+' in h:
+          h.remove('+')
+    #print(h)    
+    p=h.copy() #*remember
+    #print("p=",p)
+
+    for i in range(len(p)):
+            if p[i] in B.keys():
+                index = i
+                #print(p[i])
+                if index != -1 and index < len(p)-1:
+                     nxt = p[index + 1]
+                     #print(nxt)
+                     if nxt>='A' and nxt<='Z':
+                         B[p[i]]+=q*1
+                     else:
+                         B[p[i]]+=q*int(nxt)    
+                else:
+                     B[p[i]]+=q*1
+   
+    k=z[n:m]
+    q=q*int(z[m+1])             
+    z=k             
+    atoms(z,q)             
+q=1   
+atoms(z,q)    
+#print(B)
+
+emm= { 
+   "H": 1.008, "He": 4.0026, "Li": 6.94, "Be": 9.0122, "B": 10.81, "C": 12.011, "N": 14.007, "O": 15.999,
+    "F": 18.998, "Ne": 20.180, "Na": 22.990, "Mg": 24.305, "Al": 26.982, "Si": 28.085, "P": 30.974, "S": 32.06,
+    "Cl": 35.45, "Ar": 39.948, "K": 39.098, "Ca": 40.078, "Sc": 44.956, "Ti": 47.867, "V": 50.942, "Cr": 51.996,
+    "Mn": 54.938, "Fe": 55.845, "Co": 58.933, "Ni": 58.693, "Cu": 63.546, "Zn": 65.38, "Ga": 69.723, "Ge": 72.630,
+    "As": 74.922, "Se": 78.971, "Br": 79.904, "Kr": 83.798, "Rb": 85.468, "Sr": 87.62, "Y": 88.906, "Zr": 91.224,
+    "Nb": 92.906, "Mo": 95.95, "Tc": 98, "Ru": 101.07, "Rh": 102.91, "Pd": 106.42, "Ag": 107.87, "Cd": 112.41,
+    "In": 114.82, "Sn": 118.71, "Sb": 121.76, "Te": 127.60, "I": 126.90, "Xe": 131.29, "Cs": 132.91, "Ba": 137.33,
+    "La": 138.91, "Ce": 140.12, "Pr": 140.91, "Nd": 144.24, "Pm": 145, "Sm": 150.36, "Eu": 151.96, "Gd": 157.25,
+    "Tb": 158.93, "Dy": 162.50, "Ho": 164.93, "Er": 167.26, "Tm": 168.93, "Yb": 173.05, "Lu": 174.97, "Hf": 178.49,
+    "Ta": 180.95, "W": 183.84, "Re": 186.21, "Os": 190.23, "Ir": 192.22, "Pt": 195.08, "Au": 196.97, "Hg": 200.59,
+    "Tl": 204.38, "Pb": 207.2, "Bi": 208.98, "Po": 209, "At": 210, "Rn": 222, "Fr": 223, "Ra": 226,
+    "Ac": 227, "Th": 232.04, "Pa": 231.04, "U": 238.03, "Np": 237, "Pu": 244, "Am": 243, "Cm": 247,
+    "Bk": 247, "Cf": 251, "Es": 252, "Fm": 257, "Md": 258, "No": 259, "Lr": 262, "Rf": 267,
+    "Db": 270, "Sg": 271, "Bh": 270, "Hs": 277, "Mt": 276, "Ds": 281, "Rg": 282, "Cn": 285,
+    "Nh": 286, "Fl": 289, "Mc": 290, "Lv": 293, "Ts": 294, "Og": 294
+   
+}    
+mm=0.0
+for k,v in B.items():
+    mm+=emm[k]*v
+#print("mm=",mm)
+h=1
+while(h):
+    print('1.molar mass\n2.percentage composition by mass of each element\n3.number of elements in the compound\n4.mass of elements in given amount of compound\n5.number of moles of compound in given weight')
+    d=int(input('enter your choice:'))
+    if d==1:
+        print('molar mass of compound {} is {}g'.format(e,round(mm,4)))
+    if d==2:
+        for k,v in B.items():
+            o=((v*emm[k])/mm)*100
+            print('percentage compostion of {} is {}%'.format(k,round(o,2))) 
+    if d==99:
+        g=''
+        import math
+        from functools import reduce
+
+        nums = [v for v in B.values()]
+        gcd_all = reduce(math.gcd, nums)
+        #print(w)
+        for i in w: 
+            j=round((B[i]/gcd_all))
+            if j==1:
+                j=''
+            g+=i+str(j)
+        print(g)
+    if d==3:
+        for k,v in B.items():
+            print("no of {}'s present in {} = {}".format(k,e,v))    
+    if d==4:
+        r=input('enter given weight of compound(in grams):')
+        if 'g' in r:
+             r=float(r[:-1])
+        r=float(r)     
+        f=input('please enter the element present in the compound:')
+        l=(B[f]*emm[f])/mm
+        u=round((l*r),3)
+        print('There are {}g of {} in {}g of {}'.format(u,f,r,e)) 
+    if d==5:
+        r=input('enter given weight of compound(in grams):')
+        if 'g' in r:
+             r=float(r[:-1])
+        r=float(r)  
+        g=round((r/mm),3)
+        print('There are {} moles present in {}g of {}'.format(g,r,e))
+    h=int(input('please enter 1 to continue or 0 to quit:'))
